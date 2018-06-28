@@ -2,25 +2,33 @@
 using System.Collections;
 public class WaveSpawn : MonoBehaviour {
 
-	public int WaveSize;
+	int waveSize;
 	public GameObject EnemyPrefab;
-	public float EnemyInterval;
 	public Transform spawnPoint;
-	public float startTime;
 	public Transform[] WayPoints;
 	public GameObject Hp;
+    int currWaveHP;
 	int enemyCount=0;
 	public GameObject canvas;
-	void Start () {
-	 InvokeRepeating("SpawnEnemy",startTime,EnemyInterval);
-	}
+
+    public void StartNextWave(int _enemyHP, int _waveSize, float _enemyInterval)
+    {
+        currWaveHP = _enemyHP;
+        waveSize = _waveSize;
+        InvokeRepeating("SpawnEnemy", 0f, _enemyInterval);
+
+    }
+
 	void Update()
 	{
-		if(enemyCount == WaveSize)
+		if(enemyCount >= waveSize && GameManager.instance.isWaveStarted)
 		{
 			CancelInvoke("SpawnEnemy");
+            enemyCount = 0;
+            GameManager.instance.EndWave();
 		}
 	}
+
 	void SpawnEnemy()
 	{
 		enemyCount++;
@@ -29,6 +37,7 @@ public class WaveSpawn : MonoBehaviour {
 		GameObject hp = GameObject.Instantiate(Hp,Vector3.zero,Quaternion.identity) as GameObject;
 		hp.transform.SetParent(canvas.transform);
 		hp.GetComponent<HpBar>().enemy = enemy;
+        hp.GetComponent<HpBar>().CurHp = currWaveHP;
 		enemy.GetComponent<MoveToWayPoints>().hp = hp;
 	}
 }

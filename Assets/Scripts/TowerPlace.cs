@@ -8,11 +8,13 @@ public class TowerPlace : MonoBehaviour {
 	public bool empty = true;
 	void OnMouseDown()
 	{
-		if(empty)
+		if(empty && GameManager.instance.currentMoney >= 5)
 		{
 			curTower = GameObject.Instantiate(Tower,transform.position+offset,Quaternion.identity) as GameObject;
 			empty = false;
-		}
+            GameManager.instance.currentMoney -= 5;
+
+        }
 	}
 
 }

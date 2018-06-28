@@ -9,7 +9,7 @@ public class HpBase : MonoBehaviour {
 	// Use this for initialization
 	void Update () 
 	{
-		HPtext.text = HP.ToString();
+		HPtext.text = "Current health : " + HP.ToString();
 	}
 	
 	void OnTriggerEnter(Collider other)
@@ -19,6 +19,8 @@ public class HpBase : MonoBehaviour {
 			HP -= 10;
 			Destroy(other.gameObject);
 			Destroy(other.GetComponent<MoveToWayPoints>().hp);
+            if (HP <= 0)
+                GameManager.instance.LoseGame();
 		}
 	}
 }

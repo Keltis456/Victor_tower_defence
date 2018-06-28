@@ -19,6 +19,7 @@ public class MoveToWayPoints : MonoBehaviour {
 	}
 	if(hp.GetComponent<HpBar>().CurHp <= 0)
 	{
+            GameManager.instance.currentMoney += 1;
 		Destroy(gameObject);
 		Destroy(hp);
 	}
